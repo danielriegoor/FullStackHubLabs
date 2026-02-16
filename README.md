@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 FullStackHubLabs — Automated Tech Discovery Hub
 
-## Getting Started
+> **"Projetos reais resolvem problemas reais."** Este não é apenas mais um site de vídeos; é um ecossistema autossustentável de curadoria para desenvolvedores, movido por automação inteligente e arquitetura de alto nível.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📌 Visão Geral
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O **FullStackHubLabs** é uma plataforma viva projetada para auxiliar aprendizes e experts na jornada Full Stack. O projeto resolve o problema da curadoria de conteúdo manual através de um robô de **Discovery** que identifica, valida e categoriza conteúdos técnicos relevantes de forma 100% autônoma.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack & Infraestrutura
 
-## Learn More
+| Camada | Tecnologia |
+| :--- | :--- |
+| **Framework** | Next.js 15 (App Router - Server First) |
+| **Linguagem** | TypeScript (Strict Mode) |
+| **ORM** | Prisma 7.0+ [cite: 2026-02-16] |
+| **Database** | PostgreSQL (Neon.tech) |
+| **Estilização** | Tailwind CSS + Shadcn-ui |
+| **IA/LLM** | Google Gemini API (Curadoria de Conteúdo) |
+| **Automação** | GitHub Actions (Scheduled Sync) |
+| **Hosting** | Vercel (ISR & Edge Functions) |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ Engenharia e Arquitetura
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O projeto foi construído sobre os pilares da **Clean Architecture** e princípios **SOLID**, garantindo que a regra de negócio seja independente de frameworks e fácil de testar.
 
-## Deploy on Vercel
+### Principais Diferenciais Técnicos:
+* **Server Components First:** Maximização do uso de componentes de servidor para performance bruta e SEO otimizado.
+* **Discovery Bot (Agentic Workflow):** Pipeline automatizado que utiliza a API do Gemini para atuar como curador técnico, filtrando apenas o que é relevante para a stack Full Stack.
+* **On-Demand Revalidation:** Integração via Webhook entre GitHub Actions e Vercel, permitindo que o cache seja limpo instantaneamente após cada descoberta do robô (ISR).
+* **Escalabilidade:** Banco de dados serverless na Neon.tech com Connection Pooling configurado.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤖 O Ciclo de Vida da Automação
+
+1.  **Trigger:** O GitHub Actions dispara a cada 30 minutos.
+2.  **Discovery:** O robô varre fontes externas e utiliza IA para extrair metadados e categorizar os vídeos.
+3.  **Persistência:** O Prisma realiza um *upsert* inteligente para garantir dados únicos e íntegros.
+4.  **Instant Update:** O pipeline envia um sinal para a Vercel revalidar as páginas, atualizando o frontend em tempo real.
+
+---
+
+## 🚀 Configuração Local
+
+1.  **Clone e Instale:**
+    ```bash
+    git clone [https://github.com/danielriegoor/FullStackHubLabs.git](https://github.com/danielriegoor/FullStackHubLabs.git)
+    pnpm install
+    ```
+2.  **Variáveis de Ambiente:**
+    Configure o `.env` com `DATABASE_URL` e `API_KEY`. 
+3.  **Banco de Dados:**
+    ```bash
+    npx prisma generate
+    npx prisma migrate dev
+    ``` 
+4.  **Start:**
+    ```bash
+    pnpm dev
+    ``` 
+
+---
+
+## 📊 Dashboard de Monitoramento
+O sistema inclui uma área administrativa para acompanhar o volume de descobertas da IA e a saúde das sincronizações, demonstrando a robustez da infraestrutura. [cite: 2026-02-16]
+
+---
+
+**Desenvolvido com foco em excelência técnica por Daniel Riego.**
