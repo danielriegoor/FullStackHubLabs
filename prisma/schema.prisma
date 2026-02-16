@@ -1,0 +1,68 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  // eslint-disable-next-line
+  // previewFeatures = ["driverAdapters"] // Adicione isso por segurança
+}
+
+datasource db {
+  // eslint-disable-next-line
+  // url = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+model Video {
+  id            String          @id @default(cuid())
+  title         String
+  slug          String          @unique
+  thumbnail     String
+  duration      String
+  views         String
+  source        String
+  externalUrl   String?
+  publishedAt   DateTime        @default(now())
+  isAiGenerated Boolean         @default(false)
+  width         Int             @default(400)
+  height        Int             @default(225)
+  categories    VideoCategory[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([slug])
+}
+
+model Category {
+  id     String          @id @default(cuid())
+  name   String          @unique
+  slug   String          @unique
+  icon   String?
+  videos VideoCategory[]
+}
+
+model VideoCategory {
+  videoId    String
+  categoryId String
+  video      Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([videoId, categoryId])
+}
+
+model AffiliateProvider {
+  id        String   @id @default(cuid())
+  domain    String   @unique // ex: eporner.com
+  param     String // ex: aff=123
+  name      String // Nome amigável: ExoClick, HilltopAds
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Histórico de Importação (Logs)
+model ImportLog {
+  id           String   @id @default(cuid())
+  videoTitle   String
+  sourceUrl    String
+  status       String // "SUCCESS" ou "ERROR"
+  errorMessage String?
+  createdAt    DateTime @default(now())
+}
