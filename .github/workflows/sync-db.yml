@@ -25,6 +25,10 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }} # Sua URL do Neon aqui
           API_KEY: ${{ secrets.API_KEY }} # Pro Gemini gerar conteúdo se o banco estiver vazio
+          
+      - name: Trigger Vercel Revalidation
+        run: |
+          curl -X POST "https://full-stack-hub-labs.vercel.app/api/revalidate?secret=${{ secrets.REVALIDATE_TOKEN }}"
 
       - name: Trigger Vercel Revalidation
         run: curl -X POST "https://api.vercel.com/v1/integrations/deploy/..." # Opcional: Hook de Deploy
