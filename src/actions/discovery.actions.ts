@@ -8,6 +8,11 @@ export async function discoveryTechVideos() {
     'nextjs 15 app router',
     'react server components',
     'typescript tips 2026',
+    'react 2026',
+    'JavaScript tips',
+    'vite',
+    'PostgreSQL',
+    'Prisma ORM',
   ];
 
   console.log(
