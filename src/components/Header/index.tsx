@@ -121,7 +121,7 @@ const Header: React.FC = () => {
           {/* Left Image (ml.png) */}
           <div className='hidden md:block shrink-0 hover:scale-105 transition-transform'>
             <Image
-              src='/fs1.png'
+              src='/fs1.jpg'
               alt='Featured Left'
               className='h-12 w-auto object-contain'
               width={400}
@@ -158,7 +158,7 @@ const Header: React.FC = () => {
           {/* Right Image (bda.png) */}
           <div className='hidden md:block shrink-0 hover:scale-105 transition-transform'>
             <Image
-              src='/fs2.png'
+              src='/fs2.jpg'
               alt='Featured Right'
               className='h-12 w-auto object-contain'
               width={400}
