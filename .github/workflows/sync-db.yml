@@ -2,22 +2,26 @@ name: Scheduled DB Sync
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Roda a cada 30 minutos
-  workflow_dispatch: # Permite rodar manualmente pelo GitHub
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
 
 jobs:
   seed-db:
     runs-on: ubuntu-latest
+    # DEFINIÇÃO GLOBAL: Agora todos os steps enxergam essas variáveis
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      API_KEY: ${{ secrets.API_KEY }}
+      REVALIDATE_TOKEN: ${{ secrets.REVALIDATE_TOKEN }}
+
     steps:
       - uses: actions/checkout@v4
-
-      # PASSO NOVO: Instala o pnpm para o runner reconhecer o comando
       
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10 # Alinhado com a versão que a Vercel detectou
-      
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -25,17 +29,11 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install # Aqui o postinstall agora vai encontrar a DATABASE_URL [cite: 2026-02-16]
 
       - name: Sync Database (Neon)
         run: pnpm prisma db seed
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }} # Sua URL do Neon aqui
-          API_KEY: ${{ secrets.API_KEY }} # Pro Gemini gerar conteúdo se o banco estiver vazio
           
       - name: Trigger Vercel Revalidation
         run: |
-          curl -X POST "https://full-stack-hub-labs.vercel.app/api/revalidate?secret=${{ secrets.REVALIDATE_TOKEN }}"
-
-      - name: Trigger Vercel Revalidation
-        run: curl -X POST "https://api.vercel.com/v1/integrations/deploy/..." # Opcional: Hook de Deploy
+          curl -X POST "https://full-stack-hub-labs.vercel.app/api/revalidate?secret=${{ env.REVALIDATE_TOKEN }}"
