@@ -16,7 +16,7 @@ O **FullStackHubLabs** é uma plataforma viva projetada para auxiliar aprendizes
 | :--- | :--- |
 | **Framework** | Next.js 15 (App Router - Server First) |
 | **Linguagem** | TypeScript (Strict Mode) |
-| **ORM** | Prisma 7.0+ [cite: 2026-02-16] |
+| **ORM** | Prisma 7.0+ |
 | **Database** | PostgreSQL (Neon.tech) |
 | **Estilização** | Tailwind CSS + Shadcn-ui |
 | **IA/LLM** | Google Gemini API (Curadoria de Conteúdo) |
@@ -68,7 +68,7 @@ O projeto foi construído sobre os pilares da **Clean Architecture** e princípi
 ---
 
 ## 📊 Dashboard de Monitoramento
-O sistema inclui uma área administrativa para acompanhar o volume de descobertas da IA e a saúde das sincronizações, demonstrando a robustez da infraestrutura. [cite: 2026-02-16]
+O sistema inclui uma área administrativa para acompanhar o volume de descobertas da IA e a saúde das sincronizações, demonstrando a robustez da infraestrutura.
 
 ---
 
