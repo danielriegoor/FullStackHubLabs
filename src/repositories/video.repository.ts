@@ -193,22 +193,30 @@ export const videoRepository = {
     // eslint-disable-next-line
     data: any,
   ): Promise<VideoItem> {
+    // Destruturamos para tirar o categorySlug do 'data' antes de enviar pro Prisma
+    const {
+      categorySlug,
+      ...videoData
+    } = data;
+
     const video =
       await prisma.video.upsert({
-        where: { slug: data.slug },
+        where: { slug: videoData.slug },
         update: {
-          title: data.title,
-          thumbnail: data.thumbnail,
-          duration: data.duration,
+          title: videoData.title,
+          thumbnail:
+            videoData.thumbnail,
+          duration: videoData.duration,
         },
         create: {
-          ...data,
+          ...videoData, // Agora o categorySlug não "vaza" mais para o Prisma
           views: '0',
+          isAiGenerated: true, // Marcamos como IA para o Dashboard
           categories: {
             create: {
               category: {
                 connect: {
-                  slug: data.categorySlug,
+                  slug: categorySlug,
                 },
               },
             },
@@ -217,4 +225,33 @@ export const videoRepository = {
       });
     return mapToVideoItem(video);
   },
+
+  // async saveImportedVideo(
+  //   // eslint-disable-next-line
+  //   data: any,
+  // ): Promise<VideoItem> {
+  //   const video =
+  //     await prisma.video.upsert({
+  //       where: { slug: data.slug },
+  //       update: {
+  //         title: data.title,
+  //         thumbnail: data.thumbnail,
+  //         duration: data.duration,
+  //       },
+  //       create: {
+  //         ...data,
+  //         views: '0',
+  //         categories: {
+  //           create: {
+  //             category: {
+  //               connect: {
+  //                 slug: data.categorySlug,
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     });
+  //   return mapToVideoItem(video);
+  // },
 };

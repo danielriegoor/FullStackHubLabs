@@ -4,6 +4,10 @@ import { videoRepository } from '@/repositories/video.repository';
 import { generateDynamicContent } from '@/lib/gemini'; // Usando a IA para o "RAG" simples
 
 export async function discoveryTechVideos() {
+  const sleep = (ms: number) =>
+    new Promise((resolve) =>
+      setTimeout(resolve, ms),
+    );
   const keywords = [
     'nextjs 15 app router',
     'react server components',
@@ -20,6 +24,7 @@ export async function discoveryTechVideos() {
   );
 
   for (const term of keywords) {
+    await sleep(12000);
     try {
       // 1. "RAG" Simples: Pedimos ao Gemini para sugerir metadados reais de vídeos populares
       // Em vez de gerar do nada, a IA atua como um 'curador' de conteúdo.
