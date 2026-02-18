@@ -31,6 +31,7 @@ export async function discoveryTechVideos() {
       const suggestedVideos =
         await generateDynamicContent(
           term,
+          'recommended',
         );
 
       for (const videoData of suggestedVideos) {

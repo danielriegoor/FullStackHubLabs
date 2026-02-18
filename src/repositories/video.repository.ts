@@ -102,6 +102,7 @@ export const videoRepository = {
         const aiGenerated =
           await generateDynamicContent(
             categorySlug,
+            categorySlug,
           );
         for (const v of aiGenerated) {
           await prisma.video.upsert({
