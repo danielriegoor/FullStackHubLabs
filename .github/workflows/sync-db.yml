@@ -29,7 +29,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install # Aqui o postinstall agora vai encontrar a DATABASE_URL [cite: 2026-02-16]
+        run: pnpm install # Aqui o postinstall agora vai encontrar a DATABASE_URL
 
       - name: Sync Database (Neon)
         run: pnpm prisma db seed
