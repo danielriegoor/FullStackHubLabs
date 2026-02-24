@@ -1,16 +1,60 @@
+# docker-compose.yml
+version: '3.8'
+
 services:
   db:
-    image: postgres:16-alpine # Versão estável e leve
-    container_name: FullStackHubLabs_db
+    image: postgres:16-alpine
+    container_name: dotf4pvprod_db
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-minhasenha123}
-      POSTGRES_DB: ${POSTGRES_DB:-FullStackHubLabs}
+      POSTGRES_USER: ${POSTGRES_USER:-dotf4pprod} #
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teste124} #
+      POSTGRES_DB: ${POSTGRES_DB:-dotf4pvprod} #
     ports:
-      - '5432:5432' # Porta padrão que o Prisma vai procurar
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dotf4p_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dotf4p_app
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    environment:
+      # A URL do banco agora aponta pro nome do container 'db' dentro da rede do Docker
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-dotf4pprod}:${POSTGRES_PASSWORD:-teste124}@db:5432/${POSTGRES_DB:-dotf4pvprod}?schema=public
+      - NODE_ENV=production
+      - N8N_API_SECRET=${N8N_API_SECRET:-G6OdPfQuabG6O8mtWr4h2Xb2}
+      # Adicione outras .env aqui (ex: NEXTAUTH_SECRET)
+    networks:
+      - dotf4p_net
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: dotf4p_n8n
+    restart: always
+    ports:
+      - '5678:5678'
+    environment:
+      - N8N_PORT=5678
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n.dotf4p.com/ # Quando você configurar o subdomínio na Cloudflare
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - dotf4p_net
+
+networks:
+  dotf4p_net:
+    driver: bridge
 
 volumes:
   postgres_data:
+  n8n_data:

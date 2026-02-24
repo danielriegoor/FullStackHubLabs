@@ -7,6 +7,7 @@ CREATE TABLE "Video" (
     "duration" TEXT NOT NULL,
     "views" TEXT NOT NULL,
     "source" TEXT NOT NULL,
+    "externalUrl" TEXT,
     "publishedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isAiGenerated" BOOLEAN NOT NULL DEFAULT false,
     "width" INTEGER NOT NULL DEFAULT 400,

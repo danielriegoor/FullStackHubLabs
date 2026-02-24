@@ -4,7 +4,7 @@ import {
 } from 'next/server';
 import { decrypt } from '@/lib/auth';
 
-export async function middleware(
+export async function proxy(
   request: NextRequest,
 ) {
   const session =
@@ -32,6 +32,7 @@ export async function middleware(
     try {
       await decrypt(session);
       return NextResponse.next();
+      // eslint-disable-next-line
     } catch (e) {
       return NextResponse.redirect(
         new URL(

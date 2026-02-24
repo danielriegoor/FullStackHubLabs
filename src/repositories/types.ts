@@ -26,5 +26,29 @@ export interface NavItem {
 
 export enum ViewMode {
   Grid = 'GRID',
-  List = 'LIST'
+  List = 'LIST',
 }
+export interface ScraperSelectors {
+  container: string;
+  title: string;
+  link: string;
+  thumbnail: string;
+  duration: string;
+}
+
+export interface ScraperSettings {
+  baseUrl: string;
+  categoryPath: string;
+  linkIncludes: string[];
+  linkExcludes: string[]; // Mantendo sua lógica de filtro
+  // Seletores individuais para a lógica do Puppeteer evaluate
+  selectors: ScraperSelectors;
+  // Seletores em array para lógica de fallback/múltiplas tentativas
+  titleSelectors: string[];
+  thumbSelectors: string[];
+  durationSelectors: string[];
+}
+export type ScraperDictionary = Record<
+  string,
+  ScraperSettings
+>;

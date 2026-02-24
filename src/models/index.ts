@@ -23,7 +23,7 @@ export interface VideoItem {
   views: string;
   source: string;
   publishedAt: string;
-  externalUrl?: string; // Campo opcional para links externos (YouTube/Afiliados)
+  externalUrl?: string;
   isAiGenerated?: boolean;
   width?: number;
   height?: number;

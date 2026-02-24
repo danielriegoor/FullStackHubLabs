@@ -3,12 +3,10 @@ export const AFFILIATE_CONFIG: Record<
   string,
   string
 > = {
-  'xhamster.com':
-    'aff=FullStackHubLabs',
-  'eporner.com': 'id=FullStackHubLabs',
-  'pornhub.com':
-    'viewkey=FullStackHubLabs',
-  default: 'ref=FullStackHubLabs',
+  'xhamster.com': 'aff=dotf4p',
+  'eporner.com': 'id=dotf4p',
+  'pornhub.com': 'viewkey=dotf4p',
+  default: 'ref=dotf4p',
 };
 
 /**

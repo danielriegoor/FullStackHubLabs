@@ -1,7 +1,6 @@
 // src/repositories/video.repository.ts
 import { VideoItem } from '@/models';
 import { prisma } from '@/lib/prisma';
-import { generateDynamicContent } from '@/lib/gemini';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -27,7 +26,7 @@ export const videoRepository = {
     categorySlug: string,
     query?: string,
   ): Promise<VideoItem[]> {
-    // --- 1. BUSCA (SEARCH) ---
+    // 1. LÓGICA DE BUSCA
     if (query) {
       const searchResults =
         await prisma.video.findMany({
@@ -56,8 +55,7 @@ export const videoRepository = {
       );
     }
 
-    // --- 2. LÓGICA DE RECOMENDADOS (HOME) ---
-    // Se for 'recommended', não filtramos por slug de categoria
+    // 2. LÓGICA DE VITRINE (HOME E CATEGORIAS)
     const whereClause =
       categorySlug === 'recommended'
         ? {}
@@ -77,74 +75,13 @@ export const videoRepository = {
         orderBy: {
           publishedAt: 'desc',
         },
-        take: 12,
+        take: 35,
         include: {
           categories: {
             include: { category: true },
           },
         },
       });
-
-    // --- 3. GERAÇÃO DINÂMICA (IA) ---
-    const shouldTriggerAI =
-      dbVideos.length < 4 &&
-      [
-        'tech',
-        'gaming',
-        'recommended',
-      ].includes(categorySlug);
-
-    if (
-      shouldTriggerAI &&
-      process.env.API_KEY
-    ) {
-      try {
-        const aiGenerated =
-          await generateDynamicContent(
-            categorySlug,
-            categorySlug,
-          );
-        for (const v of aiGenerated) {
-          await prisma.video.upsert({
-            where: {
-              slug: v.title
-                .toLowerCase()
-                .replace(/ /g, '-'),
-            },
-            update: {},
-            create: {
-              title: v.title,
-              slug: v.title
-                .toLowerCase()
-                .replace(/ /g, '-'),
-              thumbnail: v.thumbnail,
-              duration: v.duration,
-              views: v.views,
-              source: v.source,
-              isAiGenerated: true,
-              categories: {
-                create: {
-                  category: {
-                    connect: {
-                      slug: categorySlug,
-                    },
-                  },
-                },
-              },
-            },
-          });
-        }
-        return [
-          ...dbVideos,
-          ...aiGenerated,
-        ].map(mapToVideoItem);
-      } catch (e) {
-        console.error(
-          'Falha na geração AI:',
-          e,
-        );
-      }
-    }
 
     return dbVideos.map(mapToVideoItem);
   },
@@ -162,7 +99,6 @@ export const videoRepository = {
         },
       });
 
-    // CORREÇÃO: Aqui retornamos apenas o vídeo formatado, sem o .map
     return video
       ? mapToVideoItem(video)
       : null;
@@ -194,7 +130,6 @@ export const videoRepository = {
     // eslint-disable-next-line
     data: any,
   ): Promise<VideoItem> {
-    // Destruturamos para tirar o categorySlug do 'data' antes de enviar pro Prisma
     const {
       categorySlug,
       ...videoData
@@ -210,9 +145,9 @@ export const videoRepository = {
           duration: videoData.duration,
         },
         create: {
-          ...videoData, // Agora o categorySlug não "vaza" mais para o Prisma
+          ...videoData,
           views: '0',
-          isAiGenerated: true, // Marcamos como IA para o Dashboard
+          isAiGenerated: true,
           categories: {
             create: {
               category: {
@@ -224,35 +159,7 @@ export const videoRepository = {
           },
         },
       });
+
     return mapToVideoItem(video);
   },
-
-  // async saveImportedVideo(
-  //   // eslint-disable-next-line
-  //   data: any,
-  // ): Promise<VideoItem> {
-  //   const video =
-  //     await prisma.video.upsert({
-  //       where: { slug: data.slug },
-  //       update: {
-  //         title: data.title,
-  //         thumbnail: data.thumbnail,
-  //         duration: data.duration,
-  //       },
-  //       create: {
-  //         ...data,
-  //         views: '0',
-  //         categories: {
-  //           create: {
-  //             category: {
-  //               connect: {
-  //                 slug: data.categorySlug,
-  //               },
-  //             },
-  //           },
-  //         },
-  //       },
-  //     });
-  //   return mapToVideoItem(video);
-  // },
 };

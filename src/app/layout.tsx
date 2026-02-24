@@ -4,9 +4,9 @@ import { Suspense } from 'react';
 
 export const metadata = {
   title:
-    'FullStackHubLabs - Seu learning hub Full Stack',
+    'DotF4p.com - Seu hub de conteúdos Adultos',
   description:
-    'FullStackHubLabs - Seu learning hub Full Stack',
+    'DotF4p.com - Seu hub de conteúdos Adultos',
 };
 
 export default function RootLayout({

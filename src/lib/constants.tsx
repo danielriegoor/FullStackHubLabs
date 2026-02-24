@@ -24,16 +24,16 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: '2',
-    name: 'Tecnologia',
-    slug: 'tech',
+    name: 'Amadoras',
+    slug: 'amateur',
     icon: React.createElement(Cpu, {
       className: 'w-4 h-4',
     }),
   },
   {
     id: '3',
-    name: 'Gaming',
-    slug: 'gaming',
+    name: '18 Years Old',
+    slug: '18yearsold',
     icon: React.createElement(
       Gamepad2,
       { className: 'w-4 h-4' },
@@ -41,32 +41,32 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: '4',
-    name: 'Natureza',
-    slug: 'nature',
+    name: 'American',
+    slug: 'american',
     icon: React.createElement(Leaf, {
       className: 'w-4 h-4',
     }),
   },
   {
     id: '5',
-    name: 'Notícias',
-    slug: 'news',
+    name: 'Massage',
+    slug: 'massage',
     icon: React.createElement(Globe, {
       className: 'w-4 h-4',
     }),
   },
   {
     id: '6',
-    name: 'Cinema',
-    slug: 'movies',
+    name: 'Milf',
+    slug: 'milf',
     icon: React.createElement(Video, {
       className: 'w-4 h-4',
     }),
   },
   {
     id: '7',
-    name: 'Tutoriais',
-    slug: 'tutorials',
+    name: 'Solo',
+    slug: 'solo',
     icon: React.createElement(
       MonitorPlay,
       { className: 'w-4 h-4' },

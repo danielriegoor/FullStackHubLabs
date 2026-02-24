@@ -35,7 +35,7 @@ export async function loginAction(
       },
     );
 
-    redirect('/admin/import');
+    redirect('/admin/dashboard');
   }
 
   return {

@@ -19,21 +19,16 @@ const VideoGrid: React.FC<
   loading = false,
   isAiMode = false,
 }) => {
-  // Este estado poderia ser gerenciado por um contexto ou searchParams também, se fosse uma preferência global.
-  // Por enquanto, fica aqui como um exemplo de estado de cliente no componente de grid.
-  const [
-    largeThumbnails,
-    // setLargeThumbnails,
-  ] = useState(false);
+  const [largeThumbnails] =
+    useState(false);
 
   const gridClass = largeThumbnails
-    ? 'grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6'
-    : 'grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-4';
+    ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'
+    : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4';
 
   if (loading) {
     return (
       <div className={gridClass}>
-        {/* Renderiza 10 skeletons enquanto carrega */}
         {Array.from({ length: 10 }).map(
           (_, i) => (
             <VideoSkeleton key={i} />
@@ -66,15 +61,16 @@ const VideoGrid: React.FC<
           ser exibido.
         </div>
       )}
+
       <div className={gridClass}>
         {videos.map((video) => (
           <VideoCard
             key={video.id}
             video={video}
-            slug={video.slug}
           />
         ))}
       </div>
+
       {!loading &&
         videos.length > 0 && (
           <div className='mt-16 flex flex-col items-center justify-center gap-4 text-gray-400'>
@@ -89,5 +85,3 @@ const VideoGrid: React.FC<
 };
 
 export default VideoGrid;
-
-// upgrade
